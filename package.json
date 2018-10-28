@@ -1,5 +1,5 @@
 {
-  "name": "goodness-of-fit",
+  "name": "goodness-of-fitz",
   "version": "0.0.1",
   "description": "Goodness of Fit Test based on Kolmogorov-Smirnov's, Bartlett's, and Mann's test.",
   "main": "dist/index.js",
@@ -17,7 +17,7 @@
   ],
   "author": "Adrian <adrian.pdmh@gmail.com>",
   "license": "ISC",
-  "homepage": "http://github.com/adrianpdm/gof-test",
+  "homepage": "http://github.com/adrianpdm/goodness-of-fit",
   "devDependencies": {
     "@types/chai": "^4.1.7",
     "@types/mocha": "^5.2.5",
