@@ -1,5 +1,5 @@
 {
-  "name": "goodness-of-fitz",
+  "name": "goodness-of-fit",
   "version": "0.0.1",
   "description": "Goodness of Fit Test based on Kolmogorov-Smirnov's, Bartlett's, and Mann's test.",
   "main": "dist/index.js",
