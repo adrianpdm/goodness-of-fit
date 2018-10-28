@@ -1,6 +1,7 @@
 {
   "compilerOptions": {
-    "module": "commonjs",
+    "lib": ["es2016"],
+    "module": "umd",
     "noImplicitAny": true,
     "target": "es5",
     "declaration" :true,

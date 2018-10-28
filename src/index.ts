@@ -1,3 +1,4 @@
+import lilliefors from "./distributionTable/lilliefors"
 import Utils from "./utils"
 
 let jstat = require('jstat')
@@ -18,7 +19,7 @@ class Result {
     }
 }
 
-function KSTest(data: Array<number>, ofNormal: boolean): Result {
+function KSTest(alpha:number, data: Array<number>, ofNormal: boolean): Result {
 
     data = data.sort((a, b) => a - b)
 
@@ -61,7 +62,7 @@ function KSTest(data: Array<number>, ofNormal: boolean): Result {
         return data.d2
     }))
 
-    testingCriteria = 0.886 / Math.sqrt(data.length)
+    testingCriteria = lilliefors.getValue(alpha, data.length)
     testingStat = Math.max(maxD1, maxD2)
     accepted = testingStat < testingCriteria
 
@@ -69,7 +70,7 @@ function KSTest(data: Array<number>, ofNormal: boolean): Result {
 
 }
 
-function Mann(data: Array<number>): Result {
+function Mann(alpha: number, data: Array<number>): Result {
 
     data = data.sort((a, b) => a - b)
 
@@ -107,8 +108,7 @@ function Mann(data: Array<number>): Result {
         }
     }
 
-    let alpha: number = 0.01,
-        dof1: number = 2 * k2,
+    let dof1: number = 2 * k2,
         dof2: number = 2 * k1,
         testingStat: number = (k2 * dividend) / (k1 * divisor)
 
@@ -120,7 +120,7 @@ function Mann(data: Array<number>): Result {
 
 }
 
-function Bartlett(data: Array<number>): Result {
+function Bartlett(alpha: number, data: Array<number>): Result {
 
     let sum: number = 0,
         sumLn: number = 0
@@ -133,8 +133,7 @@ function Bartlett(data: Array<number>): Result {
     let dividend: number = 2 * data.length * (Math.log(sum) - sumLn),
         divisor: number = 1 + ((data.length + 1) / (6 * data.length))
 
-    let alpha: number = 0.01,
-        x1: number = jstat.chisquare.inv(alpha / 2, data.length - 1),
+    let x1: number = jstat.chisquare.inv(alpha / 2, data.length - 1),
         x2: number = jstat.chisquare.inv(1 - (alpha / 2), data.length - 1),
         testingStat: number = dividend / divisor,
         accepted: boolean = x1 < testingStat && testingStat < x2,
@@ -144,17 +143,19 @@ function Bartlett(data: Array<number>): Result {
 
 }
 
-export = {
+export {Result}
 
-    ofNormalAndLognormal(data: Array<number>, ofNormal: boolean) {
-        return KSTest(data, ofNormal)
+export default {
+
+    ofNormalAndLognormal(alpha: number, data: Array<number>, ofNormal: boolean) {
+        return KSTest(alpha, data, ofNormal)
     },
 
-    ofExponential(data: Array<number>) {
-        return Bartlett(data)
+    ofExponential(alpha: number, data: Array<number>) {
+        return Bartlett(alpha, data)
     },
 
-    ofWeibull(data: Array<number>) {
-        return Mann(data)
+    ofWeibull(alpha: number, data: Array<number>) {
+        return Mann(alpha, data)
     }
 }
